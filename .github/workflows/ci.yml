@@ -27,7 +27,5 @@ jobs:
         name: my-app-jar
         path: target/*.jar
 
-- name: Run tests
-  run: mvn test
-
-
+    - name: Run tests
+      run: mvn test
