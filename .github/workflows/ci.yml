@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
   build:
@@ -14,31 +15,24 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set up JDK 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Build with Maven
-      run: mvn clean package
+    - name: Build and Run Tests with Reports
+      run: mvn clean test surefire-report:report
 
-    - name: Run tests with Maven
-      run: mvn test
-
-    # Generate surefire HTML report
-    - name: Generate HTML report
-      run: mvn surefire-report:report
-
-    # Upload XML + TXT reports
-    - name: Upload XML Test Reports
+    - name: Upload Test Reports
       uses: actions/upload-artifact@v4
       with:
-        name: xml-test-reports
-        path: target/surefire-reports/*
+        name: test-reports
+        path: |
+          target/surefire-reports/*
+          target/site/surefire-report.html
 
-    # Upload HTML report
-    - name: Upload HTML Test Report
+    - name: Upload JAR artifact
       uses: actions/upload-artifact@v4
       with:
-        name: html-test-report
-        path: target/site/surefire-report.html
+        name: my-app-jar
+        path: target/*.jar
