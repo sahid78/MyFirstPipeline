@@ -25,14 +25,18 @@ jobs:
     - name: Run tests with Maven
       run: mvn test
 
-    # XML + TXT reports (surefire-reports folder)
+    # Generate surefire HTML report
+    - name: Generate HTML report
+      run: mvn surefire-report:report
+
+    # Upload XML + TXT reports
     - name: Upload XML Test Reports
       uses: actions/upload-artifact@v4
       with:
         name: xml-test-reports
         path: target/surefire-reports/*
 
-    # HTML report (site folder)
+    # Upload HTML report
     - name: Upload HTML Test Report
       uses: actions/upload-artifact@v4
       with:
