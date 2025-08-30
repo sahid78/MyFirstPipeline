@@ -1,4 +1,4 @@
-name: Test Run
+name: Java Test Run
 
 on:
   push:
@@ -10,29 +10,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
 
-      - name: Build with Maven
-        run: mvn clean package
+    - name: Build with Maven
+      run: mvn clean package
 
-      - name: Run tests with Maven
-        run: mvn test
+    - name: Run tests with Maven
+      run: mvn test
 
-      - name: Upload Test Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-report
-          path: target/surefire-reports/*
+    # XML + TXT reports (surefire-reports folder)
+    - name: Upload XML Test Reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: xml-test-reports
+        path: target/surefire-reports/*
 
-      - name: Upload JAR artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: my-app-jar
-          path: target/*.jar
+    # HTML report (site folder)
+    - name: Upload HTML Test Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: html-test-report
+        path: target/site/surefire-report.html
