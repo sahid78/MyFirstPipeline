@@ -20,8 +20,11 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Build and Run Tests with Reports
-      run: mvn clean test surefire-report:report
+    - name: Build with Maven
+      run: mvn -B clean package
+
+    - name: Run Tests and Generate Reports
+      run: mvn surefire-report:report
 
     - name: Upload Test Reports
       uses: actions/upload-artifact@v4
@@ -31,7 +34,8 @@ jobs:
           target/surefire-reports/*
           target/site/surefire-report.html
 
-    - name: Upload JAR artifact
+    - name: Upload JAR artifact (optional)
+      if: success()
       uses: actions/upload-artifact@v4
       with:
         name: my-app-jar
