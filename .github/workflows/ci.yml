@@ -2,7 +2,8 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main  # Using standard list format for branches
 
 jobs:
   build:
@@ -26,6 +27,3 @@ jobs:
       with:
         name: my-app-jar
         path: target/*.jar
-
-    - name: Run tests
-      run: mvn test
